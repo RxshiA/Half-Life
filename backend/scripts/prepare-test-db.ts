@@ -6,7 +6,7 @@ import { execSync } from 'child_process';
 import path from 'path';
 import { config } from 'dotenv';
 
-config({ path: path.join(__dirname, '..', '.env.test') }); 
+config({ path: path.join(__dirname, '..', '.env.test') });
 
 execSync('npx prisma migrate deploy', {
   stdio: 'inherit',
