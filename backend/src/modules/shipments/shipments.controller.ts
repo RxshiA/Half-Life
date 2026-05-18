@@ -9,7 +9,7 @@ import {
 } from './shipments.schemas';
 
 export const createShipment = asyncHandler(async (req: Request, res: Response) => {
-  const shipment = await shipmentsService.createShipment(
+  const shipment = await shipmentsService.createShipment( 
     req.user!.sub,
     req.validatedBody as CreateShipmentInput,
   );

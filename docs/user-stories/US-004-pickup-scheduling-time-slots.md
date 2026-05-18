@@ -4,7 +4,7 @@
 |-------|--------|
 | **ID** | US-004 |
 | **Epic** | Delivery Operations |
-| **Priority** | Medium |
+| **Priority** | Medium | 
 | **Status** | Backlog |
 
 ---
