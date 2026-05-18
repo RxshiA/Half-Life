@@ -1,0 +1,33 @@
+# Dependencies
+**/node_modules/
+
+# Build & coverage
+**/dist/
+**/coverage/
+**/build/
+
+# Environment (keep examples and test defaults)
+**/.env
+!**/.env.example
+!**/.env.test
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Prisma local DB files
+**/*.db
+**/*.db-journal
+
+# Misc
+*.tsbuildinfo

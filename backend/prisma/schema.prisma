@@ -1,0 +1,104 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum ShipmentStatus {
+  PENDING
+  PICKED_UP
+  IN_TRANSIT
+  OUT_FOR_DELIVERY
+  DELIVERED
+  CANCELLED
+  FAILED
+}
+
+enum PackageType {
+  DOCUMENT
+  PARCEL
+  FRAGILE
+  HEAVY
+}
+
+enum ServiceLevel {
+  STANDARD
+  EXPRESS
+  OVERNIGHT
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  fullName     String
+  phone        String
+  addressLine1 String
+  addressLine2 String?
+  city         String
+  state        String
+  postalCode   String
+  country      String   @default("AU")
+  role         Role     @default(USER)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  shipments      Shipment[]
+  shipmentEvents ShipmentEvent[]
+
+  @@map("users")
+}
+
+model Shipment {
+  id               String         @id @default(cuid())
+  trackingNumber   String         @unique
+  userId           String
+  senderName       String
+  senderAddress    String
+  recipientName    String
+  recipientAddress String
+  recipientPhone   String
+  weightKg         Decimal        @db.Decimal(10, 2)
+  dimensionsCm     String
+  packageType      PackageType
+  serviceLevel     ServiceLevel
+  declaredValue    Decimal?       @db.Decimal(10, 2)
+  notes            String?
+  status           ShipmentStatus @default(PENDING)
+  estimatedDelivery DateTime?
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+
+  user   User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  events ShipmentEvent[]
+
+  @@index([userId])
+  @@index([trackingNumber])
+  @@index([status])
+  @@map("shipments")
+}
+
+model ShipmentEvent {
+  id          String         @id @default(cuid())
+  shipmentId  String
+  status      ShipmentStatus
+  location    String?
+  note        String?
+  createdAt   DateTime       @default(now())
+  createdById String?
+
+  shipment  Shipment @relation(fields: [shipmentId], references: [id], onDelete: Cascade)
+  createdBy User?    @relation(fields: [createdById], references: [id], onDelete: SetNull)
+
+  @@index([shipmentId])
+  @@map("shipment_events")
+}
