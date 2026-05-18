@@ -31,7 +31,7 @@ type CreateFormValues = z.infer<typeof createSchema>;
 export function CreateShipmentPage() {
   const navigate = useNavigate();
   const createMutation = useCreateShipment();
-
+ 
   const {
     register,
     handleSubmit,
